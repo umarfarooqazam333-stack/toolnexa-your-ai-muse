@@ -184,7 +184,7 @@ const POOL = {
 } as const;
 
 function pick<T>(pool: readonly T[], seed: number, offset: number): T {
-  return pool[Math.abs(seed + offset * 7) % pool.length];
+  return pool[Math.abs(seed + offset * 7) % pool.length] as T;
 }
 
 /* ------------------------------------------------------------------ */
