@@ -8,12 +8,8 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
-const NAV = [
-  { to: "/tools", label: "Tools" },
-  { to: "/prompt-studio", label: "Prompt Studio" },
-  { to: "/categories", label: "Categories" },
-  { to: "/tools/free-ai-tools", label: "Free AI Tools" },
-] as const;
+const linkClass =
+  "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface hover:text-foreground";
 
 export function SiteHeader() {
   const navigate = useNavigate();
@@ -38,7 +34,47 @@ export function SiteHeader() {
   function submit(e: React.FormEvent) {
     e.preventDefault();
     setOpen(false);
-    navigate({ to: "/tools", search: { q: term || undefined } as never });
+    navigate({ to: "/tools", search: { q: term, free: false } });
+  }
+
+  function Nav({ onNavigate }: { onNavigate?: () => void }) {
+    return (
+      <>
+        <Link
+          to="/tools"
+          search={{ q: "", free: false }}
+          className={linkClass}
+          activeProps={{ className: "text-foreground bg-surface" }}
+          onClick={onNavigate}
+        >
+          Tools
+        </Link>
+        <Link
+          to="/prompt-studio"
+          className={linkClass}
+          activeProps={{ className: "text-foreground bg-surface" }}
+          onClick={onNavigate}
+        >
+          Prompt Studio
+        </Link>
+        <Link
+          to="/categories"
+          className={linkClass}
+          activeProps={{ className: "text-foreground bg-surface" }}
+          onClick={onNavigate}
+        >
+          Categories
+        </Link>
+        <Link
+          to="/tools"
+          search={{ q: "", free: true }}
+          className={linkClass}
+          onClick={onNavigate}
+        >
+          Free AI Tools
+        </Link>
+      </>
+    );
   }
 
   return (
@@ -47,16 +83,7 @@ export function SiteHeader() {
         <Logo />
 
         <nav className="hidden items-center gap-1 lg:flex">
-          {NAV.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
-              activeProps={{ className: "text-foreground bg-surface" }}
-            >
-              {item.label}
-            </Link>
-          ))}
+          <Nav />
         </nav>
 
         <form onSubmit={submit} className="ml-auto hidden max-w-xs flex-1 items-center md:flex">
@@ -111,16 +138,10 @@ export function SiteHeader() {
             </div>
           </form>
           <nav className="grid gap-1">
-            {[...NAV, { to: "/saved", label: "Saved" }].map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-surface hover:text-foreground"
-              >
-                {item.label}
-              </Link>
-            ))}
+            <Nav onNavigate={() => setOpen(false)} />
+            <Link to="/saved" className={linkClass} onClick={() => setOpen(false)}>
+              Saved
+            </Link>
           </nav>
         </div>
       </div>
