@@ -10,17 +10,19 @@ export interface ToolWithCategory extends ToolRow {
   category: Pick<CategoryRow, "name" | "slug"> | null;
 }
 
+export type ToolSort = "popular" | "rating" | "newest" | "az";
+
 export interface ToolQuery {
-  q?: string;
-  category?: string;
-  pricing?: string[];
-  minRating?: number;
-  freeOnly?: boolean;
-  featured?: boolean;
-  popular?: boolean;
-  sort?: "popular" | "rating" | "newest" | "az";
-  page?: number;
-  pageSize?: number;
+  q: string | undefined;
+  category: string | undefined;
+  pricing: string[] | undefined;
+  minRating: number | undefined;
+  freeOnly: boolean;
+  featured: boolean;
+  popular: boolean;
+  sort: ToolSort;
+  page: number;
+  pageSize: number;
 }
 
 const TOOL_SELECT =
@@ -45,20 +47,24 @@ function shape(rows: any[]): ToolWithCategory[] {
 
 function parseQuery(data: unknown): ToolQuery {
   const d = (data ?? {}) as Record<string, unknown>;
-  const sort = String(d.sort ?? "popular");
+  const sort = String(d["sort"] ?? "popular");
+  const q = d["q"];
+  const category = d["category"];
+  const pricing = d["pricing"];
+  const minRating = d["minRating"];
   return {
-    q: typeof d.q === "string" ? d.q.slice(0, 120) : undefined,
-    category: typeof d.category === "string" ? d.category.slice(0, 60) : undefined,
-    pricing: Array.isArray(d.pricing)
-      ? d.pricing.filter((p): p is string => ["free", "freemium", "paid"].includes(String(p)))
+    q: typeof q === "string" && q.trim() ? q.slice(0, 120) : undefined,
+    category: typeof category === "string" && category ? category.slice(0, 60) : undefined,
+    pricing: Array.isArray(pricing)
+      ? pricing.filter((p): p is string => ["free", "freemium", "paid"].includes(String(p)))
       : undefined,
-    minRating: typeof d.minRating === "number" ? Math.min(5, Math.max(0, d.minRating)) : undefined,
-    freeOnly: d.freeOnly === true,
-    featured: d.featured === true,
-    popular: d.popular === true,
-    sort: (["popular", "rating", "newest", "az"].includes(sort) ? sort : "popular") as ToolQuery["sort"],
-    page: Math.max(1, Number(d.page ?? 1) || 1),
-    pageSize: Math.min(48, Math.max(6, Number(d.pageSize ?? 12) || 12)),
+    minRating: typeof minRating === "number" ? Math.min(5, Math.max(0, minRating)) : undefined,
+    freeOnly: d["freeOnly"] === true,
+    featured: d["featured"] === true,
+    popular: d["popular"] === true,
+    sort: (["popular", "rating", "newest", "az"].includes(sort) ? sort : "popular") as ToolSort,
+    page: Math.max(1, Number(d["page"] ?? 1) || 1),
+    pageSize: Math.min(48, Math.max(6, Number(d["pageSize"] ?? 12) || 12)),
   };
 }
 
