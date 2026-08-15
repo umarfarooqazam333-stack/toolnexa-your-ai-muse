@@ -10,33 +10,147 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as PromptStudioRouteImport } from './routes/prompt-studio'
+import { Route as AuthenticatedMyPromptsRouteImport } from './routes/_authenticated/my-prompts'
+import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
+import { Route as ToolSlugRouteImport } from './routes/tool.$slug'
+import { Route as ToolsIndexRouteImport } from './routes/tools.index'
+import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromptStudioRoute = PromptStudioRouteImport.update({
+  id: '/prompt-studio',
+  path: '/prompt-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMyPromptsRoute = AuthenticatedMyPromptsRouteImport.update({
+  id: '/my-prompts',
+  path: '/my-prompts',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ToolSlugRoute = ToolSlugRouteImport.update({
+  id: '/tool/$slug',
+  path: '/tool/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsIndexRoute = ToolsIndexRouteImport.update({
+  id: '/tools/',
+  path: '/tools/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsCategoryRoute = ToolsCategoryRouteImport.update({
+  id: '/tools/$category',
+  path: '/tools/$category',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/categories': typeof CategoriesRoute
+  '/prompt-studio': typeof PromptStudioRoute
+  '/my-prompts': typeof AuthenticatedMyPromptsRoute
+  '/saved': typeof AuthenticatedSavedRoute
+  '/tool/$slug': typeof ToolSlugRoute
+  '/tools/$category': typeof ToolsCategoryRoute
+  '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/categories': typeof CategoriesRoute
+  '/prompt-studio': typeof PromptStudioRoute
+  '/my-prompts': typeof AuthenticatedMyPromptsRoute
+  '/saved': typeof AuthenticatedSavedRoute
+  '/tool/$slug': typeof ToolSlugRoute
+  '/tools/$category': typeof ToolsCategoryRoute
+  '/tools': typeof ToolsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/categories': typeof CategoriesRoute
+  '/prompt-studio': typeof PromptStudioRoute
+  '/_authenticated/my-prompts': typeof AuthenticatedMyPromptsRoute
+  '/_authenticated/saved': typeof AuthenticatedSavedRoute
+  '/tool/$slug': typeof ToolSlugRoute
+  '/tools/$category': typeof ToolsCategoryRoute
+  '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/categories'
+    | '/prompt-studio'
+    | '/my-prompts'
+    | '/saved'
+    | '/tool/$slug'
+    | '/tools/$category'
+    | '/tools/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/categories'
+    | '/prompt-studio'
+    | '/my-prompts'
+    | '/saved'
+    | '/tool/$slug'
+    | '/tools/$category'
+    | '/tools'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/categories'
+    | '/prompt-studio'
+    | '/_authenticated/my-prompts'
+    | '/_authenticated/saved'
+    | '/tool/$slug'
+    | '/tools/$category'
+    | '/tools/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  CategoriesRoute: typeof CategoriesRoute
+  PromptStudioRoute: typeof PromptStudioRoute
+  ToolSlugRoute: typeof ToolSlugRoute
+  ToolsCategoryRoute: typeof ToolsCategoryRoute
+  ToolsIndexRoute: typeof ToolsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +162,94 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prompt-studio': {
+      id: '/prompt-studio'
+      path: '/prompt-studio'
+      fullPath: '/prompt-studio'
+      preLoaderRoute: typeof PromptStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/my-prompts': {
+      id: '/_authenticated/my-prompts'
+      path: '/my-prompts'
+      fullPath: '/my-prompts'
+      preLoaderRoute: typeof AuthenticatedMyPromptsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/saved': {
+      id: '/_authenticated/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AuthenticatedSavedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/tool/$slug': {
+      id: '/tool/$slug'
+      path: '/tool/$slug'
+      fullPath: '/tool/$slug'
+      preLoaderRoute: typeof ToolSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/': {
+      id: '/tools/'
+      path: '/tools'
+      fullPath: '/tools/'
+      preLoaderRoute: typeof ToolsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/$category': {
+      id: '/tools/$category'
+      path: '/tools/$category'
+      fullPath: '/tools/$category'
+      preLoaderRoute: typeof ToolsCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMyPromptsRoute: typeof AuthenticatedMyPromptsRoute
+  AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMyPromptsRoute: AuthenticatedMyPromptsRoute,
+  AuthenticatedSavedRoute: AuthenticatedSavedRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  CategoriesRoute: CategoriesRoute,
+  PromptStudioRoute: PromptStudioRoute,
+  ToolSlugRoute: ToolSlugRoute,
+  ToolsCategoryRoute: ToolsCategoryRoute,
+  ToolsIndexRoute: ToolsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
