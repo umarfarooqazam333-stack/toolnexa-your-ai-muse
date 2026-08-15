@@ -8,17 +8,19 @@ import {
   listTools,
 } from "@/lib/tools.functions";
 
+export type ToolSort = "popular" | "rating" | "newest" | "az";
+
 export interface ToolQueryInput {
-  q?: string;
-  category?: string;
-  pricing?: string[];
-  minRating?: number;
-  freeOnly?: boolean;
-  featured?: boolean;
-  popular?: boolean;
-  sort?: "popular" | "rating" | "newest" | "az";
-  page?: number;
-  pageSize?: number;
+  q?: string | undefined;
+  category?: string | undefined;
+  pricing?: string[] | undefined;
+  minRating?: number | undefined;
+  freeOnly?: boolean | undefined;
+  featured?: boolean | undefined;
+  popular?: boolean | undefined;
+  sort?: ToolSort | undefined;
+  page?: number | undefined;
+  pageSize?: number | undefined;
 }
 
 export const categoriesQuery = () =>
