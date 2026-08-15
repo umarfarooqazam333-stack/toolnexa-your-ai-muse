@@ -37,18 +37,24 @@ const SORTS = [
 
 interface Props {
   initialQ?: string;
+  initialFreeOnly?: boolean;
   fixedCategory?: string;
   hideCategoryFilter?: boolean;
 }
 
-export function ToolsExplorer({ initialQ = "", fixedCategory, hideCategoryFilter }: Props) {
+export function ToolsExplorer({
+  initialQ = "",
+  initialFreeOnly = false,
+  fixedCategory,
+  hideCategoryFilter,
+}: Props) {
   const queryClient = useQueryClient();
   const [q, setQ] = useState(initialQ);
   const [term, setTerm] = useState(initialQ);
   const [category, setCategory] = useState(fixedCategory ?? "all");
   const [pricing, setPricing] = useState<string[]>([]);
   const [minRating, setMinRating] = useState("0");
-  const [freeOnly, setFreeOnly] = useState(false);
+  const [freeOnly, setFreeOnly] = useState(initialFreeOnly);
   const [sort, setSort] = useState<ToolSort>("popular");
   const [featured, setFeatured] = useState(false);
   const [popular, setPopular] = useState(false);
@@ -56,6 +62,7 @@ export function ToolsExplorer({ initialQ = "", fixedCategory, hideCategoryFilter
   const [signedIn, setSignedIn] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
+  useEffect(() => setFreeOnly(initialFreeOnly), [initialFreeOnly]);
   useEffect(() => setQ(initialQ), [initialQ]);
   useEffect(() => setTerm(initialQ), [initialQ]);
   useEffect(() => {
