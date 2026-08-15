@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as ToolSlugRouteImport } from './routes/tool.$slug'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const CategoriesRoute = CategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolSlugRoute = ToolSlugRouteImport.update({
+  id: '/tool/$slug',
+  path: '/tool/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolsIndexRoute = ToolsIndexRouteImport.update({
@@ -38,12 +44,14 @@ const ToolsCategoryRoute = ToolsCategoryRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
+  '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
+  '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools': typeof ToolsIndexRoute
 }
@@ -51,20 +59,29 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
+  '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/': typeof ToolsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/categories' | '/tools/$category' | '/tools/'
+  fullPaths:
+    '/' | '/categories' | '/tool/$slug' | '/tools/$category' | '/tools/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/categories' | '/tools/$category' | '/tools'
-  id: '__root__' | '/' | '/categories' | '/tools/$category' | '/tools/'
+  to: '/' | '/categories' | '/tool/$slug' | '/tools/$category' | '/tools'
+  id:
+    | '__root__'
+    | '/'
+    | '/categories'
+    | '/tool/$slug'
+    | '/tools/$category'
+    | '/tools/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CategoriesRoute: typeof CategoriesRoute
+  ToolSlugRoute: typeof ToolSlugRoute
   ToolsCategoryRoute: typeof ToolsCategoryRoute
   ToolsIndexRoute: typeof ToolsIndexRoute
 }
@@ -83,6 +100,13 @@ declare module '@tanstack/react-router' {
       path: '/categories'
       fullPath: '/categories'
       preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tool/$slug': {
+      id: '/tool/$slug'
+      path: '/tool/$slug'
+      fullPath: '/tool/$slug'
+      preLoaderRoute: typeof ToolSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools/': {
@@ -105,6 +129,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CategoriesRoute: CategoriesRoute,
+  ToolSlugRoute: ToolSlugRoute,
   ToolsCategoryRoute: ToolsCategoryRoute,
   ToolsIndexRoute: ToolsIndexRoute,
 }
