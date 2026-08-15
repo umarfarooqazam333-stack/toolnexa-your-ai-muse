@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as PromptStudioRouteImport } from './routes/prompt-studio'
 import { Route as ToolSlugRouteImport } from './routes/tool.$slug'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const CategoriesRoute = CategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromptStudioRoute = PromptStudioRouteImport.update({
+  id: '/prompt-studio',
+  path: '/prompt-studio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolSlugRoute = ToolSlugRouteImport.update({
@@ -44,6 +50,7 @@ const ToolsCategoryRoute = ToolsCategoryRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
+  '/prompt-studio': typeof PromptStudioRoute
   '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/': typeof ToolsIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
+  '/prompt-studio': typeof PromptStudioRoute
   '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools': typeof ToolsIndexRoute
@@ -59,6 +67,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
+  '/prompt-studio': typeof PromptStudioRoute
   '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/': typeof ToolsIndexRoute
@@ -66,13 +75,25 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/categories' | '/tool/$slug' | '/tools/$category' | '/tools/'
+    | '/'
+    | '/categories'
+    | '/prompt-studio'
+    | '/tool/$slug'
+    | '/tools/$category'
+    | '/tools/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/categories' | '/tool/$slug' | '/tools/$category' | '/tools'
+  to:
+    | '/'
+    | '/categories'
+    | '/prompt-studio'
+    | '/tool/$slug'
+    | '/tools/$category'
+    | '/tools'
   id:
     | '__root__'
     | '/'
     | '/categories'
+    | '/prompt-studio'
     | '/tool/$slug'
     | '/tools/$category'
     | '/tools/'
@@ -81,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CategoriesRoute: typeof CategoriesRoute
+  PromptStudioRoute: typeof PromptStudioRoute
   ToolSlugRoute: typeof ToolSlugRoute
   ToolsCategoryRoute: typeof ToolsCategoryRoute
   ToolsIndexRoute: typeof ToolsIndexRoute
@@ -100,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/categories'
       fullPath: '/categories'
       preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prompt-studio': {
+      id: '/prompt-studio'
+      path: '/prompt-studio'
+      fullPath: '/prompt-studio'
+      preLoaderRoute: typeof PromptStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tool/$slug': {
@@ -129,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CategoriesRoute: CategoriesRoute,
+  PromptStudioRoute: PromptStudioRoute,
   ToolSlugRoute: ToolSlugRoute,
   ToolsCategoryRoute: ToolsCategoryRoute,
   ToolsIndexRoute: ToolsIndexRoute,

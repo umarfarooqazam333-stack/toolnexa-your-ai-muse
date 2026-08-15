@@ -83,7 +83,7 @@ function ToolDetail() {
 
   const isSaved = (saved.data ?? []).includes(tool.id);
   const features = (tool.features ?? []) as string[];
-  const useCases = (tool.use_cases ?? []) as string[];
+  const useCases: string[] = [];
   const tags = (tool.tags ?? []) as string[];
 
   return (
@@ -205,12 +205,6 @@ function ToolDetail() {
               <dt className="text-muted-foreground">Pricing</dt>
               <dd className="capitalize text-foreground">{tool.pricing_model}</dd>
             </div>
-            {tool.pricing_details && (
-              <div className="flex justify-between gap-4">
-                <dt className="text-muted-foreground">Plans</dt>
-                <dd className="text-right text-foreground">{tool.pricing_details}</dd>
-              </div>
-            )}
             {tool.category && (
               <div className="flex justify-between gap-4">
                 <dt className="text-muted-foreground">Category</dt>
