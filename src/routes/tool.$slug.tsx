@@ -8,19 +8,14 @@ import { PricingBadge, RatingLabel, ToolCard } from "@/components/ToolCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { toolQuery, toolsQuery } from "@/lib/tool-queries";
+import { toolQuery } from "@/lib/tool-queries";
 import { getSavedToolIds, toggleSavedTool } from "@/lib/user.functions";
 
 export const Route = createFileRoute("/tool/$slug")({
   loader: async ({ context, params }) => {
-    const tool = await context.queryClient.ensureQueryData(toolQuery(params.slug));
-    if (!tool) throw notFound();
-    if (tool.category?.slug) {
-      await context.queryClient.ensureQueryData(
-        toolsQuery({ category: tool.category.slug, sort: "popular", page: 1, pageSize: 6 }),
-      );
-    }
-    return { tool };
+    const result = await context.queryClient.ensureQueryData(toolQuery(params.slug));
+    if (!result) throw notFound();
+    return { tool: result.tool, similar: result.similar };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -60,7 +55,7 @@ function ToolNotFound() {
 }
 
 function ToolDetail() {
-  const { tool } = Route.useLoaderData();
+  const { tool, similar } = Route.useLoaderData();
   const queryClient = useQueryClient();
   const [signedIn, setSignedIn] = useState(false);
 
@@ -74,16 +69,6 @@ function ToolDetail() {
     queryKey: ["saved-tool-ids"],
     queryFn: () => getSavedToolIds(),
     enabled: signedIn,
-  });
-
-  const related = useQuery({
-    ...toolsQuery({
-      category: tool.category?.slug,
-      sort: "popular",
-      page: 1,
-      pageSize: 6,
-    }),
-    enabled: Boolean(tool.category?.slug),
   });
 
   const toggle = useMutation({
@@ -248,13 +233,13 @@ function ToolDetail() {
         </aside>
       </div>
 
-      {(related.data?.tools ?? []).filter((t) => t.id !== tool.id).length > 0 && (
+      {similar.filter((t) => t.id !== tool.id).length > 0 && (
         <section className="mt-16 space-y-6">
           <h2 className="font-display text-2xl font-semibold">
             Alternatives to {tool.name}
           </h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {(related.data?.tools ?? [])
+            {similar
               .filter((t) => t.id !== tool.id)
               .slice(0, 3)
               .map((t) => (
