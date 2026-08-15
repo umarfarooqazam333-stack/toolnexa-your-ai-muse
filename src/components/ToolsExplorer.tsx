@@ -18,7 +18,12 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
-import { categoriesQuery, toolsQuery, type ToolQueryInput } from "@/lib/tool-queries";
+import {
+  categoriesQuery,
+  toolsQuery,
+  type ToolQueryInput,
+  type ToolSort,
+} from "@/lib/tool-queries";
 import { getSavedToolIds, toggleSavedTool } from "@/lib/user.functions";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +49,7 @@ export function ToolsExplorer({ initialQ = "", fixedCategory, hideCategoryFilter
   const [pricing, setPricing] = useState<string[]>([]);
   const [minRating, setMinRating] = useState("0");
   const [freeOnly, setFreeOnly] = useState(false);
-  const [sort, setSort] = useState<ToolQueryInput["sort"]>("popular");
+  const [sort, setSort] = useState<ToolSort>("popular");
   const [featured, setFeatured] = useState(false);
   const [popular, setPopular] = useState(false);
   const [pageSize, setPageSize] = useState(12);
@@ -111,7 +116,7 @@ export function ToolsExplorer({ initialQ = "", fixedCategory, hideCategoryFilter
               className="h-11 bg-surface pl-9"
             />
           </div>
-          <Select value={sort} onValueChange={(v) => setSort(v as ToolQueryInput["sort"])}>
+          <Select value={sort} onValueChange={(v) => setSort(v as ToolSort)}>
             <SelectTrigger className="h-11 w-full sm:w-48" aria-label="Sort tools">
               <SelectValue />
             </SelectTrigger>
