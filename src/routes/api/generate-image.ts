@@ -28,15 +28,17 @@ export const Route = createFileRoute("/api/generate-image")({
         }
         const steps = Math.min(8, Math.max(1, Number(body.steps) || 4));
 
+        // FLUX.2 on Workers AI requires a multipart/form-data body.
+        const form = new FormData();
+        form.append("prompt", prompt);
+        form.append("steps", String(steps));
+
         const upstream = await fetch(
           `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${MODEL}`,
           {
             method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ prompt, steps }),
+            headers: { Authorization: `Bearer ${token}` },
+            body: form,
           },
         );
 
@@ -44,12 +46,13 @@ export const Route = createFileRoute("/api/generate-image")({
 
         if (!upstream.ok) {
           // Never forward provider payloads that could echo credentials.
-          console.error("[generate-image] upstream failed", upstream.status, (await upstream.text()).slice(0, 500));
+          console.error("[generate-image] upstream failed", upstream.status);
           return Response.json(
             { error: "Image generation failed. Please try again." },
             { status: 502 },
           );
         }
+
 
         // Some Workers AI models return raw image bytes, others JSON base64.
         if (contentType.startsWith("image/")) {
