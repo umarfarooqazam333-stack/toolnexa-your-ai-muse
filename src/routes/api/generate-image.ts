@@ -33,14 +33,26 @@ export const Route = createFileRoute("/api/generate-image")({
         form.append("prompt", prompt);
         form.append("steps", String(steps));
 
-        const upstream = await fetch(
-          `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${MODEL}`,
-          {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-            body: form,
-          },
-        );
+        let upstream: Response;
+        try {
+          upstream = await fetch(
+            `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${MODEL}`,
+            {
+              method: "POST",
+              headers: { Authorization: `Bearer ${token}` },
+              body: form,
+            },
+          );
+        } catch (error) {
+          console.error(
+            "[generate-image] provider request failed",
+            error instanceof Error ? error.name : "UnknownError",
+          );
+          return Response.json(
+            { error: "The image service is temporarily unavailable. Please try again." },
+            { status: 503 },
+          );
+        }
 
         const contentType = upstream.headers.get("content-type") ?? "";
 
@@ -65,9 +77,16 @@ export const Route = createFileRoute("/api/generate-image")({
           return Response.json({ image: `data:${contentType};base64,${base64}` });
         }
 
-        const json = (await upstream.json()) as {
-          result?: { image?: string; images?: string[] };
-        };
+        let json: { result?: { image?: string; images?: string[] } };
+        try {
+          json = (await upstream.json()) as typeof json;
+        } catch {
+          console.error("[generate-image] invalid provider response", contentType);
+          return Response.json(
+            { error: "The image service returned an invalid response. Please try again." },
+            { status: 502 },
+          );
+        }
         const image = json.result?.image ?? json.result?.images?.[0];
         if (!image) {
           console.error("[generate-image] no image in response");
