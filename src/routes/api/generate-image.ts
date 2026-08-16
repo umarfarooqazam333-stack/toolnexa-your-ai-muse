@@ -73,7 +73,7 @@ export const Route = createFileRoute("/api/generate-image")({
           console.error("[generate-image] no image in response");
           return Response.json({ error: "No image was returned." }, { status: 502 });
         }
-        const dataUrl = image.startsWith("data:") ? image : `data:image/png;base64,${image}`;
+        const dataUrl = image.startsWith("data:") ? image : `data:image/jpeg;base64,${image}`;
         return Response.json({ image: dataUrl });
       },
     },
