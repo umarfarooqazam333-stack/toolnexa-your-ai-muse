@@ -44,7 +44,7 @@ export const Route = createFileRoute("/api/generate-image")({
 
         if (!upstream.ok) {
           // Never forward provider payloads that could echo credentials.
-          console.error("[generate-image] upstream failed", upstream.status);
+          console.error("[generate-image] upstream failed", upstream.status, (await upstream.text()).slice(0, 500));
           return Response.json(
             { error: "Image generation failed. Please try again." },
             { status: 502 },
