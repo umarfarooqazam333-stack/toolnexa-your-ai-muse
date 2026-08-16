@@ -146,6 +146,51 @@ export type Database = {
           },
         ]
       }
+      image_generations: {
+        Row: {
+          aspect_ratio: string | null
+          batch_id: string | null
+          batch_size: number
+          created_at: string
+          credits_used: number
+          final_prompt: string | null
+          id: string
+          image_path: string
+          prompt: string
+          style: string | null
+          used_reference: boolean
+          user_id: string
+        }
+        Insert: {
+          aspect_ratio?: string | null
+          batch_id?: string | null
+          batch_size?: number
+          created_at?: string
+          credits_used?: number
+          final_prompt?: string | null
+          id?: string
+          image_path: string
+          prompt: string
+          style?: string | null
+          used_reference?: boolean
+          user_id: string
+        }
+        Update: {
+          aspect_ratio?: string | null
+          batch_id?: string | null
+          batch_size?: number
+          created_at?: string
+          credits_used?: number
+          final_prompt?: string | null
+          id?: string
+          image_path?: string
+          prompt?: string
+          style?: string | null
+          used_reference?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -315,6 +360,24 @@ export type Database = {
           },
         ]
       }
+      user_credits: {
+        Row: {
+          balance: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -347,6 +410,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      spend_image_credits: {
+        Args: { _amount: number; _user_id: string }
+        Returns: number
       }
     }
     Enums: {
