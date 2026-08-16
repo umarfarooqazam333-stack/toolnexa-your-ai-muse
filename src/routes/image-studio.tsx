@@ -54,9 +54,14 @@ function ImageStudio() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: trimmed }),
       });
-      const data = (await res.json()) as { image?: string; error?: string };
+      // A proxy hiccup can return an HTML error page instead of JSON.
+      const data = await res
+        .json()
+        .catch(() => ({}) as { image?: string; error?: string });
       if (!res.ok || !data.image) {
-        toast.error(data.error ?? "Image generation failed");
+        toast.error(
+          data.error ?? "Image generation timed out. Please try again.",
+        );
         return;
       }
       setImage(data.image);
