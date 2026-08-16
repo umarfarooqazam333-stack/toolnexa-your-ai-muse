@@ -58,6 +58,14 @@ export function SiteHeader() {
           Prompt Studio
         </Link>
         <Link
+          to="/image-studio"
+          className={linkClass}
+          activeProps={{ className: "text-foreground bg-surface" }}
+          onClick={onNavigate}
+        >
+          Image Studio
+        </Link>
+        <Link
           to="/categories"
           className={linkClass}
           activeProps={{ className: "text-foreground bg-surface" }}
