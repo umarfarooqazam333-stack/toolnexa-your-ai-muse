@@ -13,9 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as ImageStudioRouteImport } from './routes/image-studio'
 import { Route as PromptStudioRouteImport } from './routes/prompt-studio'
 import { Route as AuthenticatedMyPromptsRouteImport } from './routes/_authenticated/my-prompts'
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
+import { Route as ApiGenerateImageRouteImport } from './routes/api/generate-image'
 import { Route as ToolSlugRouteImport } from './routes/tool.$slug'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as ToolsCategoryRouteImport } from './routes/tools.$category'
@@ -39,6 +41,11 @@ const CategoriesRoute = CategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImageStudioRoute = ImageStudioRouteImport.update({
+  id: '/image-studio',
+  path: '/image-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PromptStudioRoute = PromptStudioRouteImport.update({
   id: '/prompt-studio',
   path: '/prompt-studio',
@@ -53,6 +60,11 @@ const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
   id: '/saved',
   path: '/saved',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiGenerateImageRoute = ApiGenerateImageRouteImport.update({
+  id: '/api/generate-image',
+  path: '/api/generate-image',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ToolSlugRoute = ToolSlugRouteImport.update({
   id: '/tool/$slug',
@@ -74,9 +86,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
+  '/image-studio': typeof ImageStudioRoute
   '/prompt-studio': typeof PromptStudioRoute
   '/my-prompts': typeof AuthenticatedMyPromptsRoute
   '/saved': typeof AuthenticatedSavedRoute
+  '/api/generate-image': typeof ApiGenerateImageRoute
   '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/': typeof ToolsIndexRoute
@@ -85,9 +99,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
+  '/image-studio': typeof ImageStudioRoute
   '/prompt-studio': typeof PromptStudioRoute
   '/my-prompts': typeof AuthenticatedMyPromptsRoute
   '/saved': typeof AuthenticatedSavedRoute
+  '/api/generate-image': typeof ApiGenerateImageRoute
   '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools': typeof ToolsIndexRoute
@@ -98,9 +114,11 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
+  '/image-studio': typeof ImageStudioRoute
   '/prompt-studio': typeof PromptStudioRoute
   '/_authenticated/my-prompts': typeof AuthenticatedMyPromptsRoute
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
+  '/api/generate-image': typeof ApiGenerateImageRoute
   '/tool/$slug': typeof ToolSlugRoute
   '/tools/$category': typeof ToolsCategoryRoute
   '/tools/': typeof ToolsIndexRoute
@@ -111,9 +129,11 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/categories'
+    | '/image-studio'
     | '/prompt-studio'
     | '/my-prompts'
     | '/saved'
+    | '/api/generate-image'
     | '/tool/$slug'
     | '/tools/$category'
     | '/tools/'
@@ -122,9 +142,11 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/categories'
+    | '/image-studio'
     | '/prompt-studio'
     | '/my-prompts'
     | '/saved'
+    | '/api/generate-image'
     | '/tool/$slug'
     | '/tools/$category'
     | '/tools'
@@ -134,9 +156,11 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/categories'
+    | '/image-studio'
     | '/prompt-studio'
     | '/_authenticated/my-prompts'
     | '/_authenticated/saved'
+    | '/api/generate-image'
     | '/tool/$slug'
     | '/tools/$category'
     | '/tools/'
@@ -147,7 +171,9 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CategoriesRoute: typeof CategoriesRoute
+  ImageStudioRoute: typeof ImageStudioRoute
   PromptStudioRoute: typeof PromptStudioRoute
+  ApiGenerateImageRoute: typeof ApiGenerateImageRoute
   ToolSlugRoute: typeof ToolSlugRoute
   ToolsCategoryRoute: typeof ToolsCategoryRoute
   ToolsIndexRoute: typeof ToolsIndexRoute
@@ -183,6 +209,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/image-studio': {
+      id: '/image-studio'
+      path: '/image-studio'
+      fullPath: '/image-studio'
+      preLoaderRoute: typeof ImageStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prompt-studio': {
       id: '/prompt-studio'
       path: '/prompt-studio'
@@ -203,6 +236,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/saved'
       preLoaderRoute: typeof AuthenticatedSavedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/generate-image': {
+      id: '/api/generate-image'
+      path: '/api/generate-image'
+      fullPath: '/api/generate-image'
+      preLoaderRoute: typeof ApiGenerateImageRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/tool/$slug': {
       id: '/tool/$slug'
@@ -246,7 +286,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CategoriesRoute: CategoriesRoute,
+  ImageStudioRoute: ImageStudioRoute,
   PromptStudioRoute: PromptStudioRoute,
+  ApiGenerateImageRoute: ApiGenerateImageRoute,
   ToolSlugRoute: ToolSlugRoute,
   ToolsCategoryRoute: ToolsCategoryRoute,
   ToolsIndexRoute: ToolsIndexRoute,
