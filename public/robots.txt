@@ -12,3 +12,4 @@ Allow: /
 
 User-agent: *
 Allow: /
+https://toolnexa-ai-hub.lovable.app/sitemap.xml
