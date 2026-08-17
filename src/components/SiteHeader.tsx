@@ -1,9 +1,19 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, Search, X } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Bookmark, LogOut, Menu, Search, Sparkles, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -13,6 +23,7 @@ const linkClass =
 
 export function SiteHeader() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [term, setTerm] = useState("");
   const [email, setEmail] = useState<string | null>(null);
@@ -37,6 +48,20 @@ export function SiteHeader() {
     navigate({ to: "/tools", search: { q: term, free: false } });
   }
 
+  async function handleSignOut() {
+    setOpen(false);
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setEmail(null);
+    toast.success("You're signed out");
+    navigate({ to: "/", replace: true });
+  }
+
   function Nav({ onNavigate }: { onNavigate?: () => void }) {
     return (
       <>
@@ -56,14 +81,6 @@ export function SiteHeader() {
           onClick={onNavigate}
         >
           Prompt Studio
-        </Link>
-        <Link
-          to="/image-studio"
-          className={linkClass}
-          activeProps={{ className: "text-foreground bg-surface" }}
-          onClick={onNavigate}
-        >
-          Image Studio
         </Link>
         <Link
           to="/categories"
@@ -112,9 +129,38 @@ export function SiteHeader() {
             <Link to="/saved">Saved</Link>
           </Button>
           {email ? (
-            <Button asChild size="sm">
-              <Link to="/my-prompts">My Prompts</Link>
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <User className="h-4 w-4" />
+                  <span className="hidden max-w-[140px] truncate sm:inline">{email}</span>
+                  <span className="sm:hidden">Account</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
+                  {email}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/my-prompts" className="cursor-pointer gap-2">
+                    <Sparkles className="h-4 w-4" />
+                    My Prompts
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/saved" className="cursor-pointer gap-2">
+                    <Bookmark className="h-4 w-4" />
+                    Saved tools
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={() => void handleSignOut()} className="gap-2">
+                  <LogOut className="h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Button asChild size="sm">
               <Link to="/auth">Login</Link>
@@ -150,6 +196,25 @@ export function SiteHeader() {
             <Link to="/saved" className={linkClass} onClick={() => setOpen(false)}>
               Saved
             </Link>
+            {email ? (
+              <>
+                <Link to="/my-prompts" className={linkClass} onClick={() => setOpen(false)}>
+                  My Prompts
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => void handleSignOut()}
+                  className={cn(linkClass, "flex items-center gap-2 text-left")}
+                >
+                  <LogOut className="h-4 w-4" />
+                  Log out
+                </button>
+              </>
+            ) : (
+              <Link to="/auth" className={linkClass} onClick={() => setOpen(false)}>
+                Login
+              </Link>
+            )}
           </nav>
         </div>
       </div>
