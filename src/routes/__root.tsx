@@ -88,6 +88,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Discover curated AI tools and turn one idea into six expert prompts with ToolNexa.",
       },
       { name: "author", content: "ToolNexa" },
+      {
+  name: "google-site-verification",
+  content: "nulvZ_ya125nKbu1ANhjmjASR7WKiNPOkxKWzwFPKJA",
+},
       { property: "og:title", content: "ToolNexa — AI Tools Finder & Prompt Studio" },
       {
         property: "og:description",
