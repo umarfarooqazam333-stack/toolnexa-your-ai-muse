@@ -49,12 +49,25 @@ export function SiteFooter() {
         </nav>
 
         <nav className="space-y-2 text-sm">
-          <h2 className="font-display text-sm font-semibold text-foreground">Account</h2>
+          <h2 className="font-display text-sm font-semibold text-foreground">Company</h2>
+          <Link to="/about" className="block text-muted-foreground hover:text-foreground">
+            About Us
+          </Link>
+          <Link to="/contact" className="block text-muted-foreground hover:text-foreground">
+            Contact Us
+          </Link>
+          <Link to="/privacy" className="block text-muted-foreground hover:text-foreground">
+            Privacy Policy
+          </Link>
+          <Link to="/terms" className="block text-muted-foreground hover:text-foreground">
+            Terms &amp; Conditions
+          </Link>
           <Link to="/auth" className="block text-muted-foreground hover:text-foreground">
             Sign in / Create account
           </Link>
         </nav>
       </div>
+
       <div className="border-t border-border px-4 py-6 text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} ToolNexa. Tool data is curated from public sources.
       </div>

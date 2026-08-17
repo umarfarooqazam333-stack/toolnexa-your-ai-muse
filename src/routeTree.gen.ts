@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PromptStudioRouteImport } from './routes/prompt-studio'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -45,6 +46,11 @@ const AuthRoute = AuthRouteImport.update({
 const CategoriesRoute = CategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/prompt-studio': typeof PromptStudioRoute
   '/terms': typeof TermsRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/prompt-studio': typeof PromptStudioRoute
   '/terms': typeof TermsRoute
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/prompt-studio': typeof PromptStudioRoute
   '/terms': typeof TermsRoute
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/categories'
+    | '/contact'
     | '/privacy'
     | '/prompt-studio'
     | '/terms'
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/categories'
+    | '/contact'
     | '/privacy'
     | '/prompt-studio'
     | '/terms'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/categories'
+    | '/contact'
     | '/privacy'
     | '/prompt-studio'
     | '/terms'
@@ -184,6 +196,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   CategoriesRoute: typeof CategoriesRoute
+  ContactRoute: typeof ContactRoute
   PrivacyRoute: typeof PrivacyRoute
   PromptStudioRoute: typeof PromptStudioRoute
   TermsRoute: typeof TermsRoute
@@ -227,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/categories'
       fullPath: '/categories'
       preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   CategoriesRoute: CategoriesRoute,
+  ContactRoute: ContactRoute,
   PrivacyRoute: PrivacyRoute,
   PromptStudioRoute: PromptStudioRoute,
   TermsRoute: TermsRoute,
