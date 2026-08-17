@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
     <loc>https://toolnexa-ai-hub.lovable.app/</loc>
   </url>
-
   <url>
     <loc>https://toolnexa-ai-hub.lovable.app/tools</loc>
   </url>
-
   <url>
     <loc>https://toolnexa-ai-hub.lovable.app/categories</loc>
   </url>
-
   <url>
     <loc>https://toolnexa-ai-hub.lovable.app/prompt-studio</loc>
   </url>
-
   <url>
     <loc>https://toolnexa-ai-hub.lovable.app/about</loc>
   </url>
-
   <url>
     <loc>https://toolnexa-ai-hub.lovable.app/contact</loc>
   </url>
-
   <url>
     <loc>https://toolnexa-ai-hub.lovable.app/privacy</loc>
   </url>
-
   <url>
     <loc>https://toolnexa-ai-hub.lovable.app/terms</loc>
   </url>
-
 </urlset>
