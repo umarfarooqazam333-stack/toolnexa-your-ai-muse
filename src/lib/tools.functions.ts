@@ -28,6 +28,11 @@ export interface ToolQuery {
 const TOOL_SELECT =
   "id,slug,name,short_description,description,features,tags,pricing_model,pricing_info,website_url,logo_url,rating,review_count,is_featured,is_popular,status,source,source_url,last_verified,created_at,updated_at,category_id,categories(name,slug)";
 
+// Lightweight projection for list/grid views — skips long text columns so
+// directory pages transfer far less data and render faster.
+const LIST_SELECT =
+  "id,slug,name,short_description,features,tags,pricing_model,website_url,logo_url,rating,review_count,is_featured,is_popular,status,category_id,created_at,categories(name,slug)";
+
 function publicClient() {
   return createClient<Database>(
     process.env["SUPABASE_URL"]!,
@@ -86,7 +91,7 @@ export const listTools = createServerFn({ method: "GET" })
 
     let query = supabase
       .from("tools")
-      .select(TOOL_SELECT, { count: "exact" })
+      .select(LIST_SELECT, { count: "exact" })
       .eq("status", "PUBLISHED");
 
     if (params.category && params.category !== "free-ai-tools") {
@@ -152,7 +157,7 @@ export const listTools = createServerFn({ method: "GET" })
       const term = params.q.trim().toLowerCase();
       const { data: extra } = await supabase
         .from("tools")
-        .select(TOOL_SELECT)
+        .select(LIST_SELECT)
         .eq("status", "PUBLISHED")
         .limit(200);
       const seen = new Set(tools.map((t) => t.id));
@@ -185,7 +190,7 @@ export const getToolBySlug = createServerFn({ method: "GET" })
     const tool = shape([row])[0]!;
     const { data: similar } = await supabase
       .from("tools")
-      .select(TOOL_SELECT)
+      .select(LIST_SELECT)
       .eq("status", "PUBLISHED")
       .eq("category_id", tool.category_id)
       .neq("id", tool.id)

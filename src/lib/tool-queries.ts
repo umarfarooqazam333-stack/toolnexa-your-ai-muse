@@ -1,4 +1,4 @@
-import { queryOptions } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions } from "@tanstack/react-query";
 
 import {
   getCategories,
@@ -27,21 +27,23 @@ export const categoriesQuery = () =>
   queryOptions({
     queryKey: ["categories"],
     queryFn: () => getCategories(),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30 * 60 * 1000,
   });
 
 export const toolsQuery = (params: ToolQueryInput) =>
   queryOptions({
     queryKey: ["tools", params],
     queryFn: () => listTools({ data: params }),
-    staleTime: 60 * 1000,
+    staleTime: 5 * 60 * 1000,
+    // Keep the previous results on screen while new filters load — no flicker.
+    placeholderData: keepPreviousData,
   });
 
 export const toolQuery = (slug: string) =>
   queryOptions({
     queryKey: ["tool", slug],
     queryFn: () => getToolBySlug({ data: { slug } }),
-    staleTime: 60 * 1000,
+    staleTime: 10 * 60 * 1000,
   });
 
 export const categoryQuery = (slug: string) =>
