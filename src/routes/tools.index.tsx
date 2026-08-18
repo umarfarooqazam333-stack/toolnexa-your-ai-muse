@@ -5,8 +5,9 @@ import { categoriesQuery, toolsQuery } from "@/lib/tool-queries";
 
 export const Route = createFileRoute("/tools/")({
   validateSearch: (search: Record<string, unknown>) => ({
-    q: typeof search["q"] === "string" ? search["q"] : "",
-    free: search["free"] === true || search["free"] === "true",
+    // Keep defaults undefined so /tools stays a clean, crawlable URL (no redirect).
+    q: typeof search["q"] === "string" && search["q"] !== "" ? search["q"] : undefined,
+    free: search["free"] === true || search["free"] === "true" ? true : undefined,
   }),
   loaderDeps: ({ search }) => ({ q: search.q, free: search.free }),
   loader: async ({ context, deps }) => {
