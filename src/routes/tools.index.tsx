@@ -58,7 +58,7 @@ function ToolsIndex() {
             : "A curated, human-reviewed directory. Filter by category, pricing model and rating to find exactly what your workflow needs."}
         </p>
       </header>
-      <ToolsExplorer initialQ={q} initialFreeOnly={free} />
+      <ToolsExplorer initialQ={q ?? ""} initialFreeOnly={free ?? false} />
     </div>
   );
 }
