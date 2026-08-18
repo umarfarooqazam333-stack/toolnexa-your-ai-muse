@@ -37,6 +37,7 @@ export const Route = createFileRoute("/prompt-studio")({
           "One idea becomes six production-ready prompts for image, video, thumbnail, character, anime and realistic models.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://toolnexa-ai-hub.lovable.app/prompt-studio" }],
   }),
   component: PromptStudio,
 });

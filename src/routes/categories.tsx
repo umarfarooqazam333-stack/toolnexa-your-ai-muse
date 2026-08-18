@@ -20,6 +20,7 @@ export const Route = createFileRoute("/categories")({
         content: "Nine curated categories covering the full AI tool landscape.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://toolnexa-ai-hub.lovable.app/categories" }],
   }),
   component: CategoriesPage,
 });

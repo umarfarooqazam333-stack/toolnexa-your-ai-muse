@@ -33,6 +33,7 @@ export const Route = createFileRoute("/")({
           "A curated AI tools directory plus a prompt studio that expands one idea into six specialised prompts.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://toolnexa-ai-hub.lovable.app/" }],
   }),
   component: Home,
 });

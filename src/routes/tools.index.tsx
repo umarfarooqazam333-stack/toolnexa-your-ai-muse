@@ -39,6 +39,7 @@ export const Route = createFileRoute("/tools/")({
           "Filter curated AI tools by category, pricing and rating — image, video, writing, code and more.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://toolnexa-ai-hub.lovable.app/tools" }],
   }),
   component: ToolsIndex,
 });
