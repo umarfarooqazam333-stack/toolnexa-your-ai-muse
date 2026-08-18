@@ -5,8 +5,9 @@ import { categoriesQuery, toolsQuery } from "@/lib/tool-queries";
 
 export const Route = createFileRoute("/tools/")({
   validateSearch: (search: Record<string, unknown>) => ({
-    q: typeof search["q"] === "string" ? search["q"] : "",
-    free: search["free"] === true || search["free"] === "true",
+    // Keep defaults undefined so /tools stays a clean, crawlable URL (no redirect).
+    q: typeof search["q"] === "string" && search["q"] !== "" ? search["q"] : undefined,
+    free: search["free"] === true || search["free"] === "true" ? true : undefined,
   }),
   loaderDeps: ({ search }) => ({ q: search.q, free: search.free }),
   loader: async ({ context, deps }) => {
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/tools/")({
           "Filter curated AI tools by category, pricing and rating — image, video, writing, code and more.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://toolnexa-ai-hub.lovable.app/tools" }],
   }),
   component: ToolsIndex,
 });
@@ -57,7 +59,7 @@ function ToolsIndex() {
             : "A curated, human-reviewed directory. Filter by category, pricing model and rating to find exactly what your workflow needs."}
         </p>
       </header>
-      <ToolsExplorer initialQ={q} initialFreeOnly={free} />
+      <ToolsExplorer initialQ={q ?? ""} initialFreeOnly={free ?? false} />
     </div>
   );
 }
