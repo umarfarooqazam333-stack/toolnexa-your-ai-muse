@@ -16,7 +16,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { trackPageView, useAnalyticsScript } from "../lib/analytics";
+import { trackPageView } from "../lib/analytics";
 
 function NotFoundComponent() {
   return (
@@ -117,6 +117,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1868771021868906",
     crossOrigin: "anonymous",
   },
+  {
+    async: true,
+    src: "https://www.googletagmanager.com/gtag/js?id=G-BW49KEEJFR",
+  },
+  {
+    children: `window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','G-BW49KEEJFR',{send_page_view:false});`,
+  },
 ],
   }),
   shellComponent: RootShell,
@@ -143,7 +150,6 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  useAnalyticsScript();
 
   useEffect(() => {
     trackPageView(pathname);
