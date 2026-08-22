@@ -3,13 +3,13 @@ const MEASUREMENT_ID = "G-BW49KEEJFR";
 declare global {
   interface Window {
     dataLayer: unknown[];
-    gtag: (...args: unknown[]) => void;
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
 export function initAnalytics() {
   if (typeof window === "undefined") return;
-  if (window.gtag) return;
+  if (typeof window.gtag === "function") return;
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = function gtag(...args: unknown[]) {
